@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:floof/home/picture.dart';
+import 'package:floof/home/picture_row/picture.dart';
 
 class PictureRow extends StatelessWidget {
   final List<String> pictures = [
@@ -12,8 +12,8 @@ class PictureRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
         crossAxisCount: 3,
       ),
       shrinkWrap: true,

@@ -1,7 +1,5 @@
-import 'dart:ui';
-
-import 'package:floof/home/picture_row.dart';
-import 'package:floof/home/sound_row.dart';
+import 'package:floof/home/picture_row/picture_row.dart';
+import 'package:floof/home/sound_row/sound_row.dart';
 import 'package:flutter/material.dart';
 
 import '../style.dart';
@@ -13,11 +11,10 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(Insets.offset),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            padComponent([
               Text(
                 "HAPPY BIRTHDAY SQUISH!!!",
                 style: TextStyles.title,
@@ -28,7 +25,7 @@ class Home extends StatelessWidget {
                 "Pictures for U :)))",
                 style: TextStyles.subtitle,
               ),
-              Container(
+              SizedBox(
                 height: 400,
                 child: Padding(
                   padding: EdgeInsets.only(top: Insets.med),
@@ -40,10 +37,20 @@ class Home extends StatelessWidget {
                 "Sounds Topaz Thought You'd Like",
                 style: TextStyles.subtitle,
               ),
-              SoundRow(),
-            ],
-          ),
+            ]),
+            SoundRow(),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget padComponent(List<Widget> widgets) {
+    return Padding(
+      padding: EdgeInsets.all(Insets.offset),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: widgets,
       ),
     );
   }
