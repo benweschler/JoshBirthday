@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Insets {
   static double get offset => 10;
@@ -6,6 +6,17 @@ class Insets {
   static double get spacer => 20;
 
   static double get med => 10;
+}
+
+class Shadows {
+  static List<BoxShadow> get universal => [
+    const BoxShadow(
+      color: Colors.black,
+      offset: Offset(0, 4),
+      spreadRadius: 1,
+      blurRadius: 5,
+    ),
+  ];
 }
 
 class TextStyles {

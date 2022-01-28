@@ -11,10 +11,11 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: [
-            padComponent([
+        child: Padding(
+          padding: EdgeInsets.all(Insets.offset),
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: [
               Text(
                 "HAPPY BIRTHDAY SQUISH!!!",
                 style: TextStyles.title,
@@ -29,7 +30,15 @@ class Home extends StatelessWidget {
                 height: 400,
                 child: Padding(
                   padding: EdgeInsets.only(top: Insets.med),
-                  child: PictureRow(),
+                  child: Container(
+                    padding: EdgeInsets.all(Insets.med),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      boxShadow: Shadows.universal,
+                    ),
+                    child: PictureRow(),
+                  ),
                 ),
               ),
               SizedBox(height: Insets.spacer),
@@ -37,20 +46,11 @@ class Home extends StatelessWidget {
                 "Sounds Topaz Thought You'd Like",
                 style: TextStyles.subtitle,
               ),
-            ]),
-            SoundRow(),
-          ],
+              SizedBox(height: Insets.med),
+              const SoundRow(),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget padComponent(List<Widget> widgets) {
-    return Padding(
-      padding: EdgeInsets.all(Insets.offset),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: widgets,
       ),
     );
   }

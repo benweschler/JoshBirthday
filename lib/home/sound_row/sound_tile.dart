@@ -2,7 +2,6 @@ import 'package:floof/home/sound_row/sound.dart';
 import 'package:flutter/material.dart';
 
 import '../../style.dart';
-import '../../utils/color_utils.dart';
 
 class SoundTile extends StatelessWidget {
   final Sound sound;
@@ -18,23 +17,13 @@ class SoundTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color cardColor =
-        changeColorLightness(Theme.of(context).scaffoldBackgroundColor, -0.25);
-
     return Container(
       width: 195,
       padding: EdgeInsets.all(Insets.med),
       decoration: BoxDecoration(
-        color: cardColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(5),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black,
-            offset: Offset(0, 4),
-            spreadRadius: 1,
-            blurRadius: 5,
-          ),
-        ],
+        boxShadow: Shadows.universal,
       ),
       child: Column(
         children: [
@@ -42,7 +31,7 @@ class SoundTile extends StatelessWidget {
           GestureDetector(
             child: Icon(
               currentlyPlaying == sound
-                  ? Icons.pause_rounded
+                  ? Icons.stop_rounded
                   : Icons.play_arrow_rounded,
               size: 50,
             ),

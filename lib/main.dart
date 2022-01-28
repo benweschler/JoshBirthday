@@ -11,12 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = randomBackgroundColor();
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: randomColor,
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: backgroundColor,
+        cardColor: changeColorLightness(backgroundColor, -0.25),
       ),
       initialRoute: '/',
       routes: {
@@ -25,4 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

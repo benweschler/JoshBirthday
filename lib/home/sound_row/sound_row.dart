@@ -49,25 +49,22 @@ class _SoundRowState extends State<SoundRow> {
     });
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      clipBehavior: Clip.none,
       child: Row(
         children: widget.sounds
             .expand((sound) => [
-                  Padding(
-                    padding: EdgeInsets.all(Insets.med),
-                    child: SoundTile(
-                      sound: sound,
-                      currentlyPlaying: currentlyPlaying,
-                      onTap: () {
-                        if (currentlyPlaying != sound) {
-                          setState(() {
-                            currentlyPlaying = sound;
-                            player.play(sound.localPath);
-                          });
-                        } else {
-                          player.fixedPlayer!.stop();
-                        }
-                      },
-                    ),
+                  SoundTile(
+                    sound: sound,
+                    currentlyPlaying: currentlyPlaying,
+                    onTap: () {
+                      if (currentlyPlaying != sound) {
+                        setState(() => currentlyPlaying = sound);
+                        player.play(sound.localPath);
+                      } else {
+                        setState(() => currentlyPlaying = null);
+                        player.fixedPlayer!.stop();
+                      }
+                    },
                   ),
                   SizedBox(width: Insets.med)
                 ])
