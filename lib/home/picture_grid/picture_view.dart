@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
+//TODO: add double tap to fully zoom and double tap, hole, and swipe to pan zooming
+
 class PictureView extends StatelessWidget {
   final String path;
 

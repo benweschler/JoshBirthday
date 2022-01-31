@@ -48,7 +48,7 @@ class _CouponCardState extends State<CouponCard> {
           child: Text(
             widget.coupon.description,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 20,
               color: isRedeemed
                   ? Colors.grey.shade800
                   : Theme.of(context).cardColor,
