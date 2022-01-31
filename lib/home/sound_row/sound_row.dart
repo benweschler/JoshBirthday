@@ -18,7 +18,7 @@ class SoundRow extends StatefulWidget {
     Sound('sounds/hello-there.mp3', 'Hello There :)'),
     Sound('sounds/nope.mp3', 'nope.'),
     Sound('sounds/oh-no.mp3', 'Ohhh Nooo'),
-    Sound('sounds/rickroll.mp3', 'Admitting I Have no Friends'),
+    Sound('sounds/rickroll.mp3', 'Me Admitting I Have No Friends'),
     Sound('sounds/what-are-you-doing-in-my-swamp.mp3', 'Go Away >:('),
   ];
 

@@ -12,6 +12,7 @@ dependencies:
   audioplayers: ^0.20.1
   flutter:
     sdk: flutter
+  permission_handler: ^8.3.0
   shared_preferences: ^2.0.12
 
 dev_dependencies:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PictureView extends StatelessWidget {
   final String path;
@@ -10,6 +11,13 @@ class PictureView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        actions: [
+          IconButton(
+              onPressed: () {
+                //TODO: add image saving
+              },
+              icon: const Icon(Icons.save_alt_rounded))
+        ],
       ),
       backgroundColor: Colors.black,
       body: Center(
