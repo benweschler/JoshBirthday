@@ -7,6 +7,8 @@ import 'package:floof/style.dart';
 class SoundRow extends StatefulWidget {
   final List<Sound> sounds = const [
     Sound('sounds/anime-wow.mp3', 'Anime Wow'),
+    Sound('sounds/azeeero.mp3', 'AZEEEEEERO'),
+    Sound('sounds/badum-tss.mp3', 'Badum Tsss'),
     Sound('sounds/boom.mp3', 'BOOM'),
     Sound('sounds/crickets.mp3', 'Crickets'),
     Sound('sounds/disgusteng.mp3', 'DISGUSTENG'),
@@ -14,7 +16,9 @@ class SoundRow extends StatefulWidget {
     Sound('sounds/epic-sax.mp3', 'Saxxy'),
     Sound('sounds/fart-with-reverb.mp3', 'Fart of the Gods'),
     Sound('sounds/hello-there.mp3', 'Hello There :)'),
-    Sound('sounds/oh-no.mp3', 'Oh No'),
+    Sound('sounds/nope.mp3', 'nope.'),
+    Sound('sounds/oh-no.mp3', 'Ohhh Nooo'),
+    Sound('sounds/rickroll.mp3', 'Admitting I Have no Friends'),
     Sound('sounds/what-are-you-doing-in-my-swamp.mp3', 'Go Away >:('),
   ];
 

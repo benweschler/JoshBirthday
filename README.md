@@ -1,6 +1,6 @@
 # floof
 
-A new Flutter project.
+Josh's 18th birthday present!
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
 name: floof
-description: A new Flutter project.
+description: Josh's 18th birthday present!
 
 publish_to: 'none'
 
@@ -12,8 +12,7 @@ dependencies:
   audioplayers: ^0.20.1
   flutter:
     sdk: flutter
-  path_provider: ^2.0.8
-  share_plus: ^3.0.4
+  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:

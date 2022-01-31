@@ -18,16 +18,17 @@ class SoundTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 195,
+      height: 120,
+      width: 215,
       padding: EdgeInsets.all(Insets.med),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: Shadows.universal,
+        borderRadius: Corners.smBorderRadius,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(sound.name, style: TextStyles.h1),
+          Text(sound.name, textAlign: TextAlign.center, style: TextStyles.h1),
           GestureDetector(
             child: Icon(
               currentlyPlaying == sound

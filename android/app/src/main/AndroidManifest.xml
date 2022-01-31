@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.floof">
+    package="com.benweschler.floof">
    <application
-        android:label="floof"
+        android:label="FLOOF"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

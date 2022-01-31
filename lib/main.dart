@@ -19,10 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: backgroundColor,
         cardColor: changeColorLightness(backgroundColor, -0.25),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const Home(),
-      },
+      home: const Home(),
     );
   }
 }
