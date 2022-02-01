@@ -6,7 +6,7 @@ import 'coupon.dart';
 
 class CouponRow extends StatefulWidget {
   final List<Coupon> coupons = const [
-    Coupon('EXTREME PIGGYBACKING', 'Zach and Ben'),
+    Coupon('EXTREME PIGGYBACKING', 'Zach and Ben', 'EXTREEEEEEMEEEE!!!'),
     Coupon('British Morning Butler Service', 'Zach and Ben'),
     Coupon('Deep Tissue Joint-Jostling', 'Ben'),
     Coupon('Sir Buffness Bootcamp', 'Zach'),

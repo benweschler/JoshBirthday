@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "253341352596",
+    "project_id": "josh-s-birthday-app",
+    "storage_bucket": "josh-s-birthday-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253341352596:android:9b4da087456f9acdeeea81",
+        "android_client_info": {
+          "package_name": "com.benweschler.floof"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253341352596-uh45jj7f3v2jk4iqposftc3okiate1ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbXZGQwRA1p2s0ih9WzZ6xMppxXKsl2Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253341352596-uh45jj7f3v2jk4iqposftc3okiate1ag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
