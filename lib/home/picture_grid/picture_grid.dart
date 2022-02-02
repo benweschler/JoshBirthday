@@ -1,8 +1,9 @@
+import 'package:floof/home/picture_grid/picture_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:floof/home/picture_grid/picture_view.dart';
 
 class PictureRow extends StatelessWidget {
-  final List<String> pictures = [
+  final List<String> picturePaths = [
     for (int i = 1; i <= 30; i++) 'assets/picture_row/$i.jpeg'
   ];
 
@@ -16,23 +17,22 @@ class PictureRow extends StatelessWidget {
         mainAxisSpacing: 3,
         crossAxisCount: 3,
       ),
-      shrinkWrap: true,
-      itemCount: pictures.length,
+      itemCount: picturePaths.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => PictureView(path: pictures[index]))),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => PictureGallery(
+                    picturePaths: picturePaths,
+                    initialIndex: index,
+                  ))),
+          //PictureView(path: picturePaths[index]))),
           child: Hero(
-            tag: pictures[index],
+            tag: picturePaths[index],
             child: Container(
-              height: 200,
-              width: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(pictures[index]),
+                  image: AssetImage(picturePaths[index]),
                 ),
               ),
             ),

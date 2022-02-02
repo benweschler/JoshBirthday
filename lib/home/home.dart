@@ -32,8 +32,8 @@ class Home extends StatelessWidget {
                   "Pictures for U :)))",
                   style: TextStyles.subtitle,
                 ),
-                SizedBox(
-                  height: 400,
+                AspectRatio(
+                  aspectRatio: 1,
                   child: Padding(
                     padding: EdgeInsets.only(top: Insets.med),
                     child: Container(
