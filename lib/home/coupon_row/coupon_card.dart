@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:floof/home/coupon_row/coupon_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,14 @@ class _CouponCardState extends State<CouponCard> {
   }
 
   void checkRedeemed() async {
+    //TODO: Firebase Debugging
+    /**************************************************************************/
+    CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
+    var couponsDoc = await coupons.doc('coupons').get();
+    Map<String, dynamic> dataMap = couponsDoc.data() as Map<String, dynamic>;
+    print(dataMap['${widget.coupon.fireStoreID}']);
+    /**************************************************************************/
+
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool(widget.coupon.title) != null) {
       setState(() => isRedeemed = true);
