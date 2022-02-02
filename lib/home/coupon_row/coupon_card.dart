@@ -28,7 +28,7 @@ class _CouponCardState extends State<CouponCard> {
 
   void checkRedeemed() async {
     final prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool(widget.coupon.name) != null) {
+    if (prefs.getBool(widget.coupon.description) != null) {
       setState(() => isRedeemed = true);
     }
   }
@@ -46,7 +46,7 @@ class _CouponCardState extends State<CouponCard> {
         ),
         child: Center(
           child: Text(
-            widget.coupon.name,
+            widget.coupon.description,
             style: TextStyle(
               fontSize: 20,
               color: isRedeemed

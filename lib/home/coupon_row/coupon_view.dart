@@ -24,7 +24,7 @@ class CouponView extends StatelessWidget {
       "This super duper official coupon entitles",
       "Mr. Fluffy",
       "to",
-      coupon.name,
+      coupon.description,
       "from",
       coupon.sender,
     ];
@@ -32,27 +32,6 @@ class CouponView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).cardColor,
-        actions: coupon.description != null
-            ? [
-                IconButton(
-                  onPressed: () => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text(coupon.name),
-                      content: Text(coupon.description!),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Close'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  icon: const Icon(Icons.info_outline_rounded),
-                ),
-              ]
-            : null,
       ),
       body: SafeArea(
         child: Padding(
@@ -99,7 +78,7 @@ class CouponView extends StatelessWidget {
                           onPressed: () async {
                             setRedeemed();
                             final prefs = await SharedPreferences.getInstance();
-                            prefs.setBool(coupon.name, true);
+                            prefs.setBool(coupon.description, true);
                             Navigator.popUntil(
                                 context, (route) => route.isFirst);
                           },

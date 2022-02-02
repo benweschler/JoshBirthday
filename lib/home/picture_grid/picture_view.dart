@@ -26,19 +26,17 @@ class PictureView extends StatelessWidget {
       ),
       backgroundColor: Colors.black,
       body: Center(
-        child: buildImage(),
+        child: InteractiveViewer(
+          maxScale: 10,
+          clipBehavior: Clip.none,
+          child: Hero(
+            tag: path,
+            child: Image.asset(path),
+          ),
+        ),
       ),
     );
   }
-
-  Widget buildImage() => InteractiveViewer(
-        maxScale: 10,
-        clipBehavior: Clip.none,
-        child: Hero(
-          tag: path,
-          child: Image.asset(path),
-        ),
-      );
 
   void savePhoto(BuildContext context) async {
     if ((Platform.isAndroid && await Permission.storage.request().isGranted) ||
