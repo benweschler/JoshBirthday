@@ -1,8 +1,8 @@
 //TODO: add coupon description with tooltip
 
 class Coupon {
-  final String description;
+  final String title;
   final String sender;
 
-  const Coupon(this.description, this.sender);
+  const Coupon(this.title, this.sender);
 }
