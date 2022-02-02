@@ -1,6 +1,5 @@
 import 'package:floof/home/picture_grid/picture_gallery.dart';
 import 'package:flutter/material.dart';
-import 'package:floof/home/picture_grid/picture_view.dart';
 
 class PictureRow extends StatelessWidget {
   final List<String> picturePaths = [
@@ -25,7 +24,6 @@ class PictureRow extends StatelessWidget {
                     picturePaths: picturePaths,
                     initialIndex: index,
                   ))),
-          //TODO: PictureView(path: picturePaths[index]))),
           child: Hero(
             tag: picturePaths[index],
             child: Container(
