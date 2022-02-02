@@ -25,7 +25,7 @@ class PictureRow extends StatelessWidget {
                     picturePaths: picturePaths,
                     initialIndex: index,
                   ))),
-          //PictureView(path: picturePaths[index]))),
+          //TODO: PictureView(path: picturePaths[index]))),
           child: Hero(
             tag: picturePaths[index],
             child: Container(
