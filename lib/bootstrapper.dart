@@ -7,20 +7,40 @@ import 'home/coupon_row/coupon.dart';
 import 'home/coupon_row/coupon_list.dart';
 
 class Bootstrapper {
-  /// Ensures that only one instance of the app is able to push to Firestore at a
-  /// time.
-  static Future<void> checkAppID() async {
-    InternetConnectionChecker().checkInterval = const Duration(milliseconds: 200);
+  static Future<void> bootstrapApp() async {
+    InternetConnectionChecker().checkInterval =
+        const Duration(milliseconds: 200);
     bool isOnline = await InternetConnectionChecker().hasConnection;
 
-    final prefs = await SharedPreferences.getInstance();
-    // Give this instance of the app a unique ID if it doesn't already have one
-    if (prefs.getString('app_id') == null) {
+    String? appID = await _getAppID(isOnline);
+
+    // Protect against any weird edge case errors of appID being null while
+    // online.
+    if (isOnline && appID != null) {
+      await _syncWithFirestore(appID);
+    }
+  }
+
+  /// Activates the app by giving it unique app ID if the device is online and
+  /// one does not exist. Returns the app's ID, or null if it is not activated.
+  static Future<String?> _getAppID(bool isOnline) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Give this instance of the app a unique ID if it doesn't already have one,
+    // but force app to register with Firebase on first run. If this is the
+    // first run and there is not network connection, do not activate the app by
+    // giving it an ID.
+    if (prefs.getString('app_id') == null && isOnline) {
       await prefs.setString('app_id', const Uuid().v1());
     }
-    String appID = prefs.getString('app_id')!;
+    return prefs.getString('app_id');
+  }
 
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static Future<void> _syncWithFirestore(String appID) async {
+    // Get an instance of both the local cache and Firestore database
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
     // Get the collection containing coupon data.
     CollectionReference couponsCollection = firestore.collection('coupons');
     // Get the app_id currently registered with firestore

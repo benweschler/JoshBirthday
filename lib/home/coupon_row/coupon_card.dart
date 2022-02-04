@@ -42,7 +42,7 @@ class _CouponCardState extends State<CouponCard> {
               title: Text('Disaster!!!'),
               content: Text(
                   'I ran into a critical error :(. Make sure to let Ben '
-                  'know about this so he can get you up and running again :).'
+                  'know about this so he can get you up and running again!'
                   '\n\nError: Local coupon cache was missing a coupon key.'),
             ),
           ),
