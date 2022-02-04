@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:floof/utils/network_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,9 +8,7 @@ import 'home/coupon_row/coupon_list.dart';
 
 class Bootstrapper {
   static Future<void> bootstrapApp() async {
-    InternetConnectionChecker().checkInterval =
-        const Duration(milliseconds: 200);
-    bool isOnline = await InternetConnectionChecker().hasConnection;
+    bool isOnline = await isConnectedToInternet();
 
     String? appID = await _getAppID(isOnline);
 

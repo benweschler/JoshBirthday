@@ -7,6 +7,7 @@ import 'coupon.dart';
 
 class CouponCard extends StatefulWidget {
   final Coupon coupon;
+  static const Color couponColor = Color(0xFFFFDB51);
 
   const CouponCard({
     Key? key,
@@ -59,7 +60,7 @@ class _CouponCardState extends State<CouponCard> {
         height: 200,
         padding: EdgeInsets.all(Insets.med),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFFFFDB51) : Colors.grey.shade400,
+          color: isActive ? CouponCard.couponColor : Colors.grey.shade400,
           borderRadius: Corners.medBorderRadius,
         ),
         child: Center(
@@ -81,7 +82,7 @@ class _CouponCardState extends State<CouponCard> {
                 MaterialPageRoute(
                   builder: (_) => CouponView(
                     coupon: widget.coupon,
-                    setRedeemed: () => setState(() => isActive = false),
+                    disableCoupon: () => setState(() => isActive = false),
                   ),
                 ),
               )

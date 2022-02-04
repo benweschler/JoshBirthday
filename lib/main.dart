@@ -44,7 +44,7 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: backgroundColor,
-        cardColor: changeColorLightness(backgroundColor, -0.25),
+        cardColor: changeColorLightness(backgroundColor, -0.35),
       ),
       home: isActivated ? const Home() : const NotActivatedScreen(),//Home(),
     );
