@@ -3,7 +3,7 @@
 class Coupon {
   final String title;
   final String sender;
-  final int fireStoreID;
+  final int firestoreID;
 
-  const Coupon(this.title, this.sender, this.fireStoreID);
+  const Coupon(this.title, this.sender, this.firestoreID);
 }

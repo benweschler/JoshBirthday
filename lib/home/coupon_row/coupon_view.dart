@@ -16,7 +16,9 @@ class CouponView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor = Theme.of(context).cardColor;
+    final Color textColor = Theme
+        .of(context)
+        .cardColor;
     final TextStyle small = TextStyles.h1.copyWith(color: textColor);
     final TextStyle large = TextStyles.title.copyWith(color: textColor);
 
@@ -31,24 +33,28 @@ class CouponView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: Theme
+            .of(context)
+            .cardColor,
         actions: [
           IconButton(
-            onPressed: () => showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) => AlertDialog(
-                title: Text(coupon.title),
-                // TODO: change this to coupon description when implemented
-                content: Text(coupon.title),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Close'),
-                  ),
-                ],
-              ),
-            ),
+            onPressed: () =>
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) =>
+                      AlertDialog(
+                        title: Text(coupon.title),
+                        // TODO: change this to coupon description when implemented
+                        content: Text(coupon.title),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Close'),
+                          ),
+                        ],
+                      ),
+                ),
             icon: const Icon(Icons.info_outline_rounded),
           ),
         ],
@@ -62,57 +68,62 @@ class CouponView extends StatelessWidget {
               children: [
                 Column(
                   children: textRows
-                      .map((row) => Text(
-                            row,
-                            style:
-                                textRows.indexOf(row) % 2 == 0 ? small : large,
-                            textAlign: TextAlign.center,
-                          ))
+                      .map((row) =>
+                      Text(
+                        row,
+                        style:
+                        textRows.indexOf(row) % 2 == 0 ? small : large,
+                        textAlign: TextAlign.center,
+                      ))
                       .expand(
                           (element) => [element, SizedBox(height: Insets.med)])
                       .toList(),
                 ),
                 const SizedBox(height: 80),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: textColor),
-                  child: Padding(
-                    padding: EdgeInsets.all(Insets.med),
-                    child: Text(
-                      "Redeem",
-                      style: TextStyles.subtitle,
-                    ),
-                  ),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text('Redeem this coupon?'),
-                      content:
-                          const Text('Redeeming coupons can\'t be undone!'),
-                      actions: [
-                        TextButton(
-                          child: const Text('Cancel'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: const Text('Redeem'),
-                          onPressed: () async {
-                            setRedeemed();
-                            final prefs = await SharedPreferences.getInstance();
-                            prefs.setBool(coupon.title, true);
-                            Navigator.popUntil(
-                                context, (route) => route.isFirst);
-                          },
-                        ),
-                      ],
-                    ),
-                    barrierDismissible: true,
-                  ),
-                ),
+                _buildRedeemButton(context, textColor),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRedeemButton(BuildContext context, Color buttonColor) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(primary: buttonColor),
+      child: Padding(
+        padding: EdgeInsets.all(Insets.med),
+        child: Text(
+          "Redeem",
+          style: TextStyles.subtitle,
+        ),
+      ),
+      onPressed: () =>
+          showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (_) =>
+                AlertDialog(
+                  title: const Text('Redeem this coupon?'),
+                  content: const Text('Redeeming coupons can\'t be undone!'),
+                  actions: [
+                    TextButton(
+                      child: const Text('Cancel'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: const Text('Redeem'),
+                      onPressed: () async {
+                        setRedeemed();
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.setBool(coupon.title, false);
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                      },
+                    ),
+                  ],
+                ),
+          ),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:floof/home/coupon_row/coupon_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +18,7 @@ class CouponCard extends StatefulWidget {
 }
 
 class _CouponCardState extends State<CouponCard> {
-  bool isRedeemed = false;
+  bool isActive = true;
 
   @override
   void initState() {
@@ -28,18 +27,28 @@ class _CouponCardState extends State<CouponCard> {
   }
 
   void checkRedeemed() async {
-    //TODO: Firebase Debugging
-    /**************************************************************************/
-    CollectionReference coupons = FirebaseFirestore.instance.collection('coupons');
-    var couponsDoc = await coupons.doc('coupons').get();
-    Map<String, dynamic> dataMap = couponsDoc.data() as Map<String, dynamic>;
-    print(dataMap['${widget.coupon.fireStoreID}']);
-    /**************************************************************************/
-
     final prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool(widget.coupon.title) != null) {
-      setState(() => isRedeemed = true);
-    }
+    bool? couponIsRedeemed = prefs.getBool(widget.coupon.title);
+    setState(() {
+      if(couponIsRedeemed != null) {
+        isActive = prefs.getBool(widget.coupon.title)!;
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => WillPopScope(
+            onWillPop: () async => false,
+            child: const AlertDialog(
+              title: Text('Disaster!!!'),
+              content: Text(
+                  'I ran into a critical error :(. Make sure to let Ben '
+                  'know about this so he can get you up and running again :).'
+                  '\n\nError: Local coupon cache was missing a coupon key.'),
+            ),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -50,7 +59,7 @@ class _CouponCardState extends State<CouponCard> {
         height: 200,
         padding: EdgeInsets.all(Insets.med),
         decoration: BoxDecoration(
-          color: isRedeemed ? Colors.grey.shade400 : const Color(0xFFFFDB51),
+          color: isActive ? const Color(0xFFFFDB51) : Colors.grey.shade400,
           borderRadius: Corners.medBorderRadius,
         ),
         child: Center(
@@ -58,26 +67,25 @@ class _CouponCardState extends State<CouponCard> {
             widget.coupon.title,
             style: TextStyle(
               fontSize: 20,
-              color: isRedeemed
-                  ? Colors.grey.shade800
-                  : Theme.of(context).cardColor,
+              color:
+                  isActive ? Theme.of(context).cardColor : Colors.grey.shade800,
               fontWeight: FontWeight.w900,
             ),
             textAlign: TextAlign.center,
           ),
         ),
       ),
-      onTap: isRedeemed
-          ? null
-          : () => Navigator.push(
+      onTap: isActive
+          ? () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => CouponView(
                     coupon: widget.coupon,
-                    setRedeemed: () => setState(() => isRedeemed = true),
+                    setRedeemed: () => setState(() => isActive = false),
                   ),
                 ),
-              ),
+              )
+          : null,
     );
   }
 }
