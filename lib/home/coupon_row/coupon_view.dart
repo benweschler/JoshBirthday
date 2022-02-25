@@ -119,20 +119,30 @@ class CouponView extends StatelessWidget {
             TextButton(
               child: const Text('Redeem'),
               onPressed: () async {
+                FirebaseFirestore firebase = FirebaseFirestore.instance;
                 // Only allow coupon redemption when online
                 if (!(await isConnectedToInternet())) {
-                  _showErrorSnackbar(context);
-                } else {
+                  _showErrorSnackBar(context);
+                }
+                else if (AccessVersion.version ==
+                    (await firebase.doc('app_id/version').get())
+                        .get('required_version') as String) {
                   //TODO: test this
                   // Set coupon to redeemed in Firestore.
                   // If firestore can't be reached, don't redeem.
-                  await FirebaseFirestore.instance
+                  await firebase
                       .collection('coupons')
                       .doc('${coupon.firestoreID}')
                       .update({'isActive': false})
                       .then((_) async =>
-                          await _redeemCoupon(context, coupon, disableCoupon))
-                      .catchError((_) => _showErrorSnackbar(context));
+                  await _redeemCoupon(context, coupon, disableCoupon))
+                      .catchError((_) => _showErrorSnackBar(context));
+                }
+                // This will also trigger if the app version could not be
+                // retrieved from Firestore due to Josh's sneaky pause wifi trick.
+                else {
+                  Navigator.pop(context);
+                  _showOutdatedAppDialog(context);
                 }
               },
             ),
@@ -190,7 +200,7 @@ class CouponView extends StatelessWidget {
     );
   }
 
-  void _showErrorSnackbar(BuildContext context) {
+  void _showErrorSnackBar(BuildContext context) {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -199,5 +209,22 @@ class CouponView extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
     );
+  }
+
+  void _showOutdatedAppDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: const Text(
+              'It looks like you\'re using an outdated version'
+                  ' of the app. Updated to the latest version '
+                  'in order to redeem coupons.'),
+          actions: [
+            TextButton(
+              child: const Text("Got It"),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        ));
   }
 }
