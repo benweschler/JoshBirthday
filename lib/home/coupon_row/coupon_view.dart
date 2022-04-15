@@ -20,7 +20,7 @@ class CouponView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color textColor = Theme.of(context).cardColor;
-    final TextStyle smallStyle = TextStyles.h1.copyWith(color: textColor);
+    final TextStyle smallStyle = TextStyles.body.copyWith(color: textColor);
     final TextStyle largeStyle = TextStyles.title.copyWith(color: textColor);
 
     final List<String> textRows = [
@@ -182,7 +182,7 @@ class CouponView extends StatelessWidget {
         content: Text(
           'Gimme my stuff!',
           textAlign: TextAlign.center,
-          style: TextStyles.h1.copyWith(
+          style: TextStyles.body.copyWith(
             color: textColor,
           ),
         ),

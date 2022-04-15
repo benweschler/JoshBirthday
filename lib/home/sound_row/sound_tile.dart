@@ -28,7 +28,7 @@ class SoundTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(sound.name, textAlign: TextAlign.center, style: TextStyles.h1),
+          Text(sound.name, textAlign: TextAlign.center, style: TextStyles.body),
           GestureDetector(
             child: Icon(
               currentlyPlaying == sound

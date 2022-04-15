@@ -16,35 +16,35 @@ class CouponList {
     Coupon('Break a Date with the Dishwasher', 'Mom and Dad', 8, [_text("Dishes suck. Don’t do them. Make parents do instead.")]),
     Coupon('Premium Back Scritchies', 'Mom and Dad', 9, [_text('they’re the SCRITCHIEST')]),
     Coupon('Amateur Mani Night', 'Mom', 10, [_text('Are your nails looking a little tired? No time for the salon? Mom will be at your service to paint your nails an array of amazing colors of your choice!')]),
-    Coupon('A Personal Housecleaner', 'Mom and Dad', 11, [_text("Feel like being a slop but don’t want to clean up? Make mom and dad do it instead!")]),
+    Coupon('A Personal Housecleaner', 'Mom and Dad', 11, [_text("Feel like being a slob and don’t want to clean up? Make mom and dad do it instead!")]),
     Coupon('Trash Me in a Game of Your Choice', 'Ben', 12, [_text("Need an ego boost? Crush a lowly n00b on your home court.")]),
-    Coupon('A Morsel Pu Pu Platter', 'Mom', 13, [_text("PuPu Platter [Hawaiian]: A medley of appetizers.\n\nMorsels[Weschler] – Delectable little bits mom makes with whatever she finds in the kitchen. They’re never the same twice, but whatever it ends up being it’ll be delish!")]),
+    Coupon('A Morsel Pu Pu Platter', 'Mom', 13, [_text("PuPu Platter [Hawaiian]: A medley of appetizers.\n\nMorsels [Weschler] – Delectable little bits Mom makes with whatever she finds in the kitchen. They’re never the same twice, but whatever it ends up being it’ll be delish!")]),
     Coupon('I\'ll Respond to "Person Who Has No Friends" for a Day', 'Ben', 14, [_text("ugh.")]),
     Coupon('A Haiku for You\nIs What This Haicoupon\'ll Do', 'Zach and Ben, to You', 15, [_text("Josh gets a haiku\nFrom Zach and Ben, you get Two!\nRefrigerator")]),
     Coupon('A Singular Meow', 'Zen Master Topaz', 16, [_text("REQUIRED: ONE HEAD PAT")]),
   ];
 }
 
-TextSpan _url(String url) {
-  return TextSpan(
-    text: url,
-    style: TextStyles.h1.copyWith(
-      color: Colors.blue,
-      decoration: TextDecoration.underline,
-    ),
-    recognizer: TapGestureRecognizer()
-      ..onTap = () => launch(url),
-  );
-}
-
 TextSpan _text(String text) {
-  return TextSpan(text: text, style: TextStyles.h1);
+  return TextSpan(text: text, style: TextStyles.body);
 }
 
 TextSpan _smallText(String text) {
   return TextSpan(
     text: text,
     style: const TextStyle(fontSize: 10),
+  );
+}
+
+TextSpan _url(String url) {
+  return TextSpan(
+    text: url,
+    style: TextStyles.body.copyWith(
+      color: Colors.blue,
+      decoration: TextDecoration.underline,
+    ),
+    recognizer: TapGestureRecognizer()
+      ..onTap = () => launch(url),
   );
 }
 

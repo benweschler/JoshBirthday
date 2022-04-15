@@ -12,8 +12,6 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        left: false,
-        right: false,
         bottom: false,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,

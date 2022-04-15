@@ -45,6 +45,7 @@ class Bootstrapper {
     DocumentSnapshot appIDDoc =
         await firestore.doc('app_id/active_app_id').get();
     String activeFirestoreID = appIDDoc.get('active_app_id') as String;
+
     // Another app instance has written to Firestore more recently than this one
     if (activeFirestoreID != appID) {
       // Set the active app ID in Firestore to this one

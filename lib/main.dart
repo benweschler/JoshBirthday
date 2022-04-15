@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:floof/auth_screen.dart';
 import 'package:floof/not_activated_screen.dart';
 import 'package:floof/utils/color_utils.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _MainAppState extends State<MainApp> {
         scaffoldBackgroundColor: backgroundColor,
         cardColor: changeColorLightness(backgroundColor, -0.35),
       ),
+      //home: const AuthScreen(),
       home: isActivated ? const Home() : const NotActivatedScreen(),//Home(),
     );
   }

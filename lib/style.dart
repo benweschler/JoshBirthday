@@ -23,6 +23,6 @@ class TextStyles {
   static TextStyle get subtitle =>
       const TextStyle(fontSize: 24, fontWeight: FontWeight.w500);
 
-  static TextStyle get h1 =>
+  static TextStyle get body =>
       const TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
 }
