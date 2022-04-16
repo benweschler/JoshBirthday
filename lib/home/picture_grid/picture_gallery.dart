@@ -34,15 +34,15 @@ class _PictureGalleryState extends State<PictureGallery> {
         onVerticalDragStart: (_) => Navigator.pop(context),
         child: Stack(
           children: [
-            _buildPhotoGallery(),
-            _buildCustomAppBar(),
+            photoGallery,
+            photoAppBar,
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPhotoGallery() => PhotoViewGallery.builder(
+  Widget get photoGallery => PhotoViewGallery.builder(
         pageController: PageController(
           initialPage: widget.initialIndex,
         ),
@@ -64,7 +64,7 @@ class _PictureGalleryState extends State<PictureGallery> {
         onPageChanged: (index) => setState(() => currentPhotoIndex = index),
       );
 
-  Widget _buildCustomAppBar() => AnimatedOpacity(
+  Widget get photoAppBar => AnimatedOpacity(
         opacity: appBarIsVisible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 100),
         child: SizedBox(
@@ -73,7 +73,7 @@ class _PictureGalleryState extends State<PictureGallery> {
             backgroundColor: Colors.black,
             actions: [
               IconButton(
-                  onPressed: () => savePhoto(
+                  onPressed: () => _savePhoto(
                       context, widget.picturePaths[currentPhotoIndex]),
                   icon: const Icon(Icons.save_alt_rounded)),
             ],
@@ -81,7 +81,7 @@ class _PictureGalleryState extends State<PictureGallery> {
         ),
       );
 
-  void savePhoto(BuildContext context, String imagePath) async {
+  void _savePhoto(BuildContext context, String imagePath) async {
     if (!Platform.isAndroid && !Platform.isIOS) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content:
@@ -106,7 +106,7 @@ class _PictureGalleryState extends State<PictureGallery> {
     }
   }
 
-  void writeToLocalStorage(String assetPath) async {
+  void _writeToLocalStorage(String assetPath) async {
     // get the location in which to cache the image
     final tempDir = await getTemporaryDirectory();
     String savePath =
@@ -133,7 +133,7 @@ class _PictureGalleryState extends State<PictureGallery> {
             ),
             TextButton(
               onPressed: () {
-                writeToLocalStorage(imagePath);
+                _writeToLocalStorage(imagePath);
                 Navigator.pop(context);
               },
               child: const Text('Save'),
