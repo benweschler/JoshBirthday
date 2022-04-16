@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:floof/auth_screen.dart';
 import 'package:floof/not_activated_screen.dart';
-import 'package:floof/utils/color_utils.dart';
+import 'package:floof/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,16 +40,20 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = randomBackgroundColor();
     return MaterialApp(
       title: 'FLOOF',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: backgroundColor,
-        cardColor: changeColorLightness(backgroundColor, -0.35),
+      theme: AppTheme.getTheme(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return isActivated ? const Home() : const NotActivatedScreen();
+          } else {
+            return const AuthScreen();
+          }
+        },
       ),
-      //home: const AuthScreen(),
-      home: isActivated ? const Home() : const NotActivatedScreen(),//Home(),
     );
   }
 

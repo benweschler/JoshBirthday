@@ -4,7 +4,7 @@ import 'package:floof/utils/network_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../style.dart';
+import '../../theme/style.dart';
 import 'coupon.dart';
 
 class CouponView extends StatelessWidget {
@@ -19,7 +19,7 @@ class CouponView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor = Theme.of(context).cardColor;
+    final Color textColor = Theme.of(context).colorScheme.primary;
     final TextStyle smallStyle = TextStyles.body.copyWith(color: textColor);
     final TextStyle largeStyle = TextStyles.title.copyWith(color: textColor);
 
@@ -34,7 +34,7 @@ class CouponView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             onPressed: () => showDialog(
@@ -86,7 +86,7 @@ class CouponView extends StatelessWidget {
                       .toList(),
                 ),
                 const SizedBox(height: 80),
-                _buildRedeemButton(context, textColor),
+                _buildRedeemButton(context),
               ],
             ),
           ),
@@ -95,9 +95,8 @@ class CouponView extends StatelessWidget {
     );
   }
 
-  Widget _buildRedeemButton(BuildContext context, Color buttonColor) {
+  Widget _buildRedeemButton(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: buttonColor),
       child: Padding(
         padding: EdgeInsets.all(Insets.med),
         child: Text(
@@ -166,7 +165,7 @@ class CouponView extends StatelessWidget {
   }
 
   void _showRedeemedCard(BuildContext context, Coupon coupon) {
-    Color textColor = Theme.of(context).cardColor;
+    Color textColor = Theme.of(context).colorScheme.primary;
 
     showDialog(
       context: context,
@@ -190,11 +189,8 @@ class CouponView extends StatelessWidget {
           TextButton(
             onPressed: () =>
                 Navigator.popUntil(context, (route) => route.isFirst),
-            child: Text(
-              'Close',
-              style: TextStyle(color: textColor),
-            ),
-          )
+            child: const Text('Close'),
+          ),
         ],
       ),
     );

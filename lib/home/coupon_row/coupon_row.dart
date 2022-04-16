@@ -1,7 +1,7 @@
 import 'package:floof/home/coupon_row/coupon_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../style.dart';
+import '../../theme/style.dart';
 import 'coupon_list.dart';
 
 class CouponRow extends StatefulWidget {

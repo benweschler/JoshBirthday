@@ -2,7 +2,7 @@ import 'package:floof/home/coupon_row/coupon_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../style.dart';
+import '../../theme/style.dart';
 import 'coupon.dart';
 
 class CouponCard extends StatefulWidget {
@@ -69,7 +69,7 @@ class _CouponCardState extends State<CouponCard> {
             style: TextStyle(
               fontSize: 20,
               color:
-                  isActive ? Theme.of(context).cardColor : Colors.grey.shade800,
+                  isActive ? Theme.of(context).colorScheme.primary : Colors.grey.shade800,
               fontWeight: FontWeight.w900,
             ),
             textAlign: TextAlign.center,

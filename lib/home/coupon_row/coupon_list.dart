@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../style.dart';
+import '../../theme/style.dart';
 import 'coupon.dart';
 
 class CouponList {

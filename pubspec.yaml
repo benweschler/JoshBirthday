@@ -11,6 +11,7 @@ environment:
 dependencies:
   audioplayers: ^0.20.1
   cloud_firestore: ^3.1.7
+  firebase_auth: ^3.3.14
   firebase_core: ^1.12.0
   flutter:
     sdk: flutter
@@ -34,3 +35,7 @@ flutter:
   assets:
     - assets/picture_row/
     - assets/sounds/
+  fonts:
+    - family: PinyonScript
+      fonts:
+        - asset: assets/fonts/PinyonScript-Regular.ttf

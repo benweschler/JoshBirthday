@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:floof/home/sound_row/sound.dart';
 import 'package:floof/home/sound_row/sound_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:floof/style.dart';
+import 'package:floof/theme/style.dart';
 
 class SoundRow extends StatefulWidget {
   final List<Sound> sounds = const [

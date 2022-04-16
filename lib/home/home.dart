@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:floof/home/picture_grid/picture_grid.dart';
 import 'package:floof/home/sound_row/sound_row.dart';
 import 'package:flutter/material.dart';
 
-import '../style.dart';
+import '../theme/style.dart';
 import 'coupon_row/coupon_row.dart';
 
 class Home extends StatelessWidget {
@@ -20,6 +21,18 @@ class Home extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Builder(
+                    builder: (context) {
+                      return TextButton(
+                        child: const Text("Logout"),
+                        style: Theme.of(context).textButtonTheme.style,
+                        onPressed: FirebaseAuth.instance.signOut,
+                      );
+                    },
+                  ),
+                ),
                 Text(
                   "HAPPY BIRTHDAY SQUISH!!!",
                   style: TextStyles.title,
@@ -37,7 +50,7 @@ class Home extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.all(Insets.med),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius: Corners.medBorderRadius,
                       ),
                       child: PictureRow(),

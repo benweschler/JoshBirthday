@@ -1,7 +1,7 @@
 import 'package:floof/home/sound_row/sound.dart';
 import 'package:flutter/material.dart';
 
-import '../../style.dart';
+import '../../theme/style.dart';
 
 class SoundTile extends StatelessWidget {
   final Sound sound;
@@ -22,7 +22,7 @@ class SoundTile extends StatelessWidget {
       width: 215,
       padding: EdgeInsets.all(Insets.med),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: Corners.smBorderRadius,
       ),
       child: Column(
