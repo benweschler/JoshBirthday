@@ -30,7 +30,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  late bool isActivated = false;
+  bool isActivated = false;
 
   @override
   void initState() {
@@ -48,7 +48,24 @@ class _MainAppState extends State<MainApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return isActivated ? const Home() : const NotActivatedScreen();
+            return FutureBuilder(
+              future: Bootstrapper.bootstrapApp(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return isActivated
+                      ? const Home()
+                      : const NotActivatedScreen();
+                } else {
+                  return Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  );
+                }
+              },
+            );
           } else {
             return const AuthScreen();
           }

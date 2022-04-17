@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:floof/utils/network_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -12,10 +13,10 @@ class Bootstrapper {
 
     String? appID = await _getAppID(isOnline);
 
-    // Protect against any weird edge case errors of appID being null while
-    // online.
+    // Protect against any weird, possibly non-existent edge case errors of no
+    // app id being assigned but isOnline being true.
     if (isOnline && appID != null) {
-      await _syncWithFirestore(appID);
+      await _syncCouponsWithFirestore(appID);
     }
   }
 
@@ -34,7 +35,13 @@ class Bootstrapper {
     return prefs.getString('app_id');
   }
 
-  static Future<void> _syncWithFirestore(String appID) async {
+  //TODO: implement
+  static Future<void> _downloadPhotosFromFirebase() async {
+    final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    throw UnimplementedError();
+  }
+
+  static Future<void> _syncCouponsWithFirestore(String appID) async {
     // Get an instance of both the local cache and Firestore database
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseFirestore firestore = FirebaseFirestore.instance;

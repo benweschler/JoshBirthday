@@ -87,15 +87,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: passwordController,
                     ),
                     SizedBox(height: Insets.lg),
-                    ElevatedButton(
-                      child: const Text(
-                        "Sign In",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size.fromHeight(50),
-                      ),
-                      onPressed: signIn,
+                    SignInButton(
+                      emailController: emailController,
+                      passwordController: passwordController,
                     ),
                   ],
                 ),
@@ -106,19 +100,57 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
+}
 
-  Future signIn() async {
+class SignInButton extends StatefulWidget {
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+
+  const SignInButton({
+    Key? key,
+    required this.emailController,
+    required this.passwordController,
+  }) : super(key: key);
+
+  @override
+  State<SignInButton> createState() => _SignInButtonState();
+}
+
+class _SignInButtonState extends State<SignInButton> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      child: isLoading
+          ? const CircularProgressIndicator(color: Colors.white)
+          : const Text(
+              "Sign In",
+              style: TextStyle(fontSize: 16),
+            ),
+      style: ElevatedButton.styleFrom(
+        fixedSize: const Size.fromHeight(50),
+      ),
+      onPressed: () {
+        setState(() => isLoading = true);
+        _signIn();
+      },
+    );
+  }
+
+  Future _signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        email: widget.emailController.text.trim(),
+        password: widget.passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (_) {
-      showInvalidLoginDialog();
+      setState(() => isLoading = false);
+      _showInvalidLoginDialog();
     }
   }
 
-  void showInvalidLoginDialog() {
+  void _showInvalidLoginDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

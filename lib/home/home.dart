@@ -22,21 +22,19 @@ class Home extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
-                  alignment: Alignment.centerRight,
-                  child: Builder(
-                    builder: (context) {
-                      return TextButton(
-                        child: const Text("Logout"),
-                        style: Theme.of(context).textButtonTheme.style,
-                        onPressed: FirebaseAuth.instance.signOut,
-                      );
-                    },
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    child: const Text("Logout"),
+                    onPressed: FirebaseAuth.instance.signOut,
                   ),
                 ),
-                Text(
-                  "HAPPY BIRTHDAY SQUISH!!!",
-                  style: TextStyles.title,
-                  textAlign: TextAlign.center,
+                SizedBox(height: Insets.med),
+                Center(
+                  child: Text(
+                    "HAPPY BIRTHDAY SQUISH!!!",
+                    style: TextStyles.title,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 SizedBox(height: Insets.spacer),
                 Text(

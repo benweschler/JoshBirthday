@@ -20,10 +20,11 @@ class PictureRow extends StatelessWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PictureGallery(
-                    picturePaths: picturePaths,
-                    initialIndex: index,
-                  ))),
+            builder: (_) => PictureGallery(
+              picturePaths: picturePaths,
+              initialIndex: index,
+            ),
+          )),
           child: Hero(
             tag: picturePaths[index],
             child: Container(

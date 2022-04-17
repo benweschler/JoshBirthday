@@ -48,19 +48,20 @@ class _PictureGalleryState extends State<PictureGallery> {
         ),
         itemCount: widget.picturePaths.length,
         builder: (context, index) => PhotoViewGalleryPageOptions(
-            imageProvider: AssetImage(widget.picturePaths[index]),
-            minScale: PhotoViewComputedScale.contained,
-            maxScale: PhotoViewComputedScale.contained * 10,
-            heroAttributes:
-                PhotoViewHeroAttributes(tag: widget.picturePaths[index]),
-            scaleStateCycle: (scaleState) {
-              switch (scaleState) {
-                case PhotoViewScaleState.initial:
-                  return PhotoViewScaleState.originalSize;
-                default:
-                  return PhotoViewScaleState.initial;
-              }
-            }),
+          imageProvider: AssetImage(widget.picturePaths[index]),
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.contained * 10,
+          heroAttributes:
+              PhotoViewHeroAttributes(tag: widget.picturePaths[index]),
+          scaleStateCycle: (scaleState) {
+            switch (scaleState) {
+              case PhotoViewScaleState.initial:
+                return PhotoViewScaleState.originalSize;
+              default:
+                return PhotoViewScaleState.initial;
+            }
+          },
+        ),
         onPageChanged: (index) => setState(() => currentPhotoIndex = index),
       );
 
