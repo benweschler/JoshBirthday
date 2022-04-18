@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:floof/utils/network_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -22,7 +23,7 @@ class Bootstrapper {
 
     String appID = prefs.getString('app_id') ?? const Uuid().v1();
 
-    print('bootstrap start.');
+    debugPrint('BOOTSTRAP START');
 
     if (isOnline) {
       try {
@@ -34,52 +35,48 @@ class Bootstrapper {
             .timeout(const Duration(seconds: 15));
         await _downloadPhotosFromFirebase();
       } catch (_) {
-        print('bootstrap error: $_');
+        debugPrint('Bootstrap Error Caught: $_');
         return false;
       }
     }
     // Only set an app id if syncing to Firebase is successful.
     await prefs.setString('app_id', appID);
 
-    print('bootstrap successful');
+    debugPrint('Bootstrap Successful');
 
     return true;
   }
 
   static Future<void> _downloadPhotosFromFirebase() async {
-    print("_downloadPhotosFromFirebase");
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final String picturePath = "${appDocDir.path}/pictures";
     final Directory pictureDownloadDir = Directory(picturePath);
 
     // Only download photos if photos have not already been downloaded. When
     // photos are downloaded, the /pictures directory is created.
-    if (await pictureDownloadDir.exists()) {
-      print('picture dir exists.');
-      return;
-    }
+    if (await pictureDownloadDir.exists()) return;
+
     pictureDownloadDir.create();
 
     final firebaseStorage = FirebaseStorage.instance.ref().child("pictures");
     final ListResult pictureList = await firebaseStorage.listAll();
-    print("Pic Num: ${pictureList.items.length}");
-    int count = 1;
+    debugPrint("Number of pictures found in Firebase Storage: ${pictureList.items.length}");
+
     for (var picture in pictureList.items) {
-      print(
-          'writing picture number ${count++} called ${picture.name} from firebase');
+      debugPrint('Saving ${picture.name} from firebase');
       final file = File("${pictureDownloadDir.path}/${picture.name}");
       await picture.writeToFile(file).catchError((e) async {
         await pictureDownloadDir.delete();
         throw Exception("Exception occurred during picture download");
       });
     }
-    print(
-        'files found in download dir after download: ${(await pictureDownloadDir.list().toList()).length}');
-    print('picture download successfully completed.');
+    debugPrint('Number of files successfully saved: ${(await pictureDownloadDir.list().toList()).length}');
+    debugPrint('Picture download successfully completed.');
   }
 
   static Future<void> _syncCouponsWithFirestore(String appID) async {
-    print("_syncCouponsWithFirestore");
+    debugPrint("Syncing coupons with Firestore...");
+
     // Get an instance of both the local cache and Firestore database
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -93,6 +90,8 @@ class Bootstrapper {
 
     // Another app instance has written to Firestore more recently than this one
     if (activeFirestoreID != appID) {
+      debugPrint("Pulling coupon data from Firestore...");
+
       // Set the active app ID in Firestore to this one
       await firestore
           .doc('app_id/active_app_id')
@@ -108,6 +107,8 @@ class Bootstrapper {
     }
     // This app instance has written to Firestore most recently
     else {
+      debugPrint("Pushing coupon data to Firestore...");
+
       // Push coupon record from local storage to Firestore
       for (Coupon coupon in CouponList.coupons) {
         couponsCollection
