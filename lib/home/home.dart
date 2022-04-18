@@ -8,7 +8,12 @@ import '../theme/style.dart';
 import 'coupon_row/coupon_row.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final VoidCallback rerollTheme;
+
+  const Home({
+    Key? key,
+    required this.rerollTheme,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +27,24 @@ class Home extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    child: const Text("Logout"),
-                    onPressed: FirebaseAuth.instance.signOut,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      child: Row(
+                        children: const [
+                          Text("Reroll Theme "),
+                          Icon(Icons.swap_horiz_rounded),
+                        ],
+                      ),
+                      onPressed: rerollTheme,
+                    ),
+                    SizedBox(width: Insets.med),
+                    TextButton(
+                      child: const Text("Logout"),
+                      onPressed: FirebaseAuth.instance.signOut,
+                    ),
+                  ],
                 ),
                 SizedBox(height: Insets.med),
                 Center(

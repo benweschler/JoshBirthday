@@ -47,7 +47,7 @@ class CouponView extends StatelessWidget {
                       TextStyles.subtitle.copyWith(fontWeight: FontWeight.bold),
                 ),
                 content: Text.rich(
-                  TextSpan(children: coupon.description),
+                  TextSpan(children: coupon.buildDescription(context)),
                   // make the haiku description centered :)
                   textAlign: coupon.firestoreID == 15
                       ? TextAlign.center

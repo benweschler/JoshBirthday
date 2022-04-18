@@ -17,15 +17,22 @@ void main() async {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({Key? key}) : super(key: key);
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  ThemeData theme = AppTheme.getTheme();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FLOOF',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.getTheme(),
+      theme: theme,
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -35,7 +42,10 @@ class MainApp extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!
-                      ? const Home()
+                      ? Home(
+                          rerollTheme: () =>
+                              setState(() => theme = AppTheme.getTheme()),
+                        )
                       : const NotActivatedScreen();
                 } else {
                   return Scaffold(

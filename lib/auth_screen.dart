@@ -55,15 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       decoration: InputDecoration(
                         labelText: 'Email',
                         border: const OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        // Focused label style
-                        floatingLabelStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        focusColor: Theme.of(context).colorScheme.primary,
                       ),
                       style: const TextStyle(fontSize: 16),
                       cursorColor: Theme.of(context).colorScheme.primary,
@@ -74,15 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                         border: const OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        // Focused label style
-                        floatingLabelStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                        focusColor: Theme.of(context).colorScheme.primary,
                       ),
                       style: const TextStyle(fontSize: 16),
                       obscureText: true,
@@ -128,7 +112,7 @@ class _SignInButtonState extends State<SignInButton> {
       child: isLoading
           ? const CircularProgressIndicator(color: Colors.white)
           : const Text(
-              "Sign In",
+              "GIVE ME FLOOF",
               style: TextStyle(fontSize: 16),
             ),
       style: ElevatedButton.styleFrom(
@@ -170,7 +154,7 @@ class _SignInButtonState extends State<SignInButton> {
       builder: (context) => AlertDialog(
         title: const Text("Halt, Imposter!"),
         content: const Text(
-            "YOUUUUUUU SCALLYWAG! You're not fluffy at all! Only the "
+            "YOUUUUUUU SCALLYWAG!! You're not fluffy at all! Only the "
             "absolute floofiest are permitted to FLOOF past this point. Come "
             "back later when you're less lame."),
         actions: [
