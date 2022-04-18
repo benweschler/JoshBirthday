@@ -16,16 +16,16 @@ class Bootstrapper {
   /// If the device is connected to the internet, activates this instance of the
   /// app by syncing coupons with firestore, providing this instance of the app
   /// with an app id, and downloading the picture gallery if it hasn't already.
-  /// Returns true if activation was successful, and false otherwise.
+  /// Returns true if activation was successful, and false otherwise. A return
+  /// value of false will not allow the app to be used.
   static Future<bool> bootstrapApp() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isOnline = await isConnectedToInternet();
 
-    String appID = prefs.getString('app_id') ?? const Uuid().v1();
-
     debugPrint('BOOTSTRAP START');
 
     if (isOnline) {
+      String appID = prefs.getString('app_id') ?? const Uuid().v1();
       try {
         await _syncCouponsWithFirestore(appID)
             // This may not actually be necessary, but if the device's network
@@ -34,13 +34,18 @@ class Bootstrapper {
             // throw some error.
             .timeout(const Duration(seconds: 15));
         await _downloadPhotosFromFirebase();
+        // Only set an app id if syncing to Firebase is successful.
+        await prefs.setString('app_id', appID);
       } catch (_) {
         debugPrint('Bootstrap Error Caught: $_');
         return false;
       }
     }
-    // Only set an app id if syncing to Firebase is successful.
-    await prefs.setString('app_id', appID);
+    // Offline functionality is not available if the device is offline and the
+    // app instance has not yet been activated by being assigned an app ID.
+    else if(prefs.getString('app_id') == null) {
+      return false;
+    }
 
     debugPrint('Bootstrap Successful');
 

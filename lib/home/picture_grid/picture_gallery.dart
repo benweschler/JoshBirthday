@@ -141,9 +141,12 @@ class _PictureGalleryState extends State<PictureGallery> {
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
-            const TextButton(
-              onPressed: openAppSettings,
-              child: Text('Settings'),
+            TextButton(
+              onPressed: () {
+                openAppSettings();
+                Navigator.pop(context);
+              },
+              child: const Text('Settings'),
             )
           ],
         ),

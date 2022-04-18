@@ -118,12 +118,24 @@ class CouponView extends StatelessWidget {
             TextButton(
               child: const Text('Redeem'),
               onPressed: () async {
-                FirebaseFirestore firebase = FirebaseFirestore.instance;
+                final firebase = FirebaseFirestore.instance;
+
                 // Only allow coupon redemption when online
                 if (!(await isConnectedToInternet())) {
                   _showNetworkErrorSnackBar(context);
                 }
-                else if (AccessVersion.version ==
+                // This page can be reachable and current coupon can be disabled
+                // in Firebase if the coupon was disabled, but not through this
+                // instance of the app, and this app was bootstrapped while
+                // offline.
+                else if ((await firebase.doc('coupons/coupons').get())
+                        .get('${coupon.firestoreID}') == false) {
+                  final prefs = await SharedPreferences.getInstance();
+                  // set the local coupon cache to match firebase.
+                  prefs.setBool(coupon.title, false);
+                  Navigator.pop(context);
+                  _showInvalidCouponDialog(context);
+                } else if (AccessVersion.version ==
                     (await firebase.doc('app_id/version').get())
                         .get('required_version') as String) {
                   // Set coupon to redeemed in Firestore.
@@ -133,7 +145,7 @@ class CouponView extends StatelessWidget {
                       .doc('coupons')
                       .update({'${coupon.firestoreID}': false})
                       .then((_) async =>
-                  await _redeemCoupon(context, coupon, disableCoupon))
+                          await _redeemCoupon(context, coupon, disableCoupon))
                       .catchError((_) => _showNetworkErrorSnackBar(context));
                 }
                 // This will also trigger if the app version could not be
@@ -195,6 +207,26 @@ class CouponView extends StatelessWidget {
     );
   }
 
+  void _showInvalidCouponDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("WHY YOUUU TRICKY DOG"),
+        content: const Text("Why don't you look at that... You were trying to "
+            "trick me and get some free coupons! Well guess what? I'm smarter "
+            "than you and you got caught and you also have no friends you "
+            "absolute nincompoop. Get wrecked m8. Now go restart the app like a "
+            "good little boy."),
+        actions: [
+          TextButton(
+            child: const Text("Accept Your Lameness"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showNetworkErrorSnackBar(BuildContext context) {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -210,16 +242,16 @@ class CouponView extends StatelessWidget {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          content: const Text(
-              'It looks like you\'re using an outdated version'
+              content: const Text(
+                  'It looks like you\'re using an outdated version'
                   ' of the app. Update to the latest version in order to redeem'
                   ' coupons.'),
-          actions: [
-            TextButton(
-              child: const Text('Got It'),
-              onPressed: () => Navigator.pop(context),
-            )
-          ],
-        ));
+              actions: [
+                TextButton(
+                  child: const Text('Got It'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ));
   }
 }

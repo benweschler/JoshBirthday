@@ -143,22 +143,24 @@ class _SignInButtonState extends State<SignInButton> {
 
   Future _signIn() async {
     if (!(await isConnectedToInternet())) {
-      _showNetworkErrorDialog();
-    }
-    try {
-      await FirebaseAuth.instance.signOut();
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-            email: widget.emailController.text.trim(),
-            password: widget.passwordController.text.trim(),
-          )
-          .timeout(const Duration(seconds: 15));
-    } on FirebaseAuthException {
-      setState(() => isLoading = false);
-      _showInvalidLoginDialog();
-    } on TimeoutException {
       setState(() => isLoading = false);
       _showNetworkErrorDialog();
+    } else {
+      try {
+        await FirebaseAuth.instance.signOut();
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+          email: widget.emailController.text.trim(),
+          password: widget.passwordController.text.trim(),
+        )
+            .timeout(const Duration(seconds: 15));
+      } on FirebaseAuthException {
+        setState(() => isLoading = false);
+        _showInvalidLoginDialog();
+      } on TimeoutException {
+        setState(() => isLoading = false);
+        _showNetworkErrorDialog();
+      }
     }
   }
 
