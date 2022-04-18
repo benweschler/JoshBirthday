@@ -121,12 +121,11 @@ class CouponView extends StatelessWidget {
                 FirebaseFirestore firebase = FirebaseFirestore.instance;
                 // Only allow coupon redemption when online
                 if (!(await isConnectedToInternet())) {
-                  _showErrorSnackBar(context);
+                  _showNetworkErrorSnackBar(context);
                 }
                 else if (AccessVersion.version ==
                     (await firebase.doc('app_id/version').get())
                         .get('required_version') as String) {
-                  //TODO: test this
                   // Set coupon to redeemed in Firestore.
                   // If firestore can't be reached, don't redeem.
                   await firebase
@@ -135,7 +134,7 @@ class CouponView extends StatelessWidget {
                       .update({'isActive': false})
                       .then((_) async =>
                   await _redeemCoupon(context, coupon, disableCoupon))
-                      .catchError((_) => _showErrorSnackBar(context));
+                      .catchError((_) => _showNetworkErrorSnackBar(context));
                 }
                 // This will also trigger if the app version could not be
                 // retrieved from Firestore due to Josh's sneaky pause wifi trick.
@@ -196,7 +195,7 @@ class CouponView extends StatelessWidget {
     );
   }
 
-  void _showErrorSnackBar(BuildContext context) {
+  void _showNetworkErrorSnackBar(BuildContext context) {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

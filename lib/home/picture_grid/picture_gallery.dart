@@ -32,15 +32,15 @@ class _PictureGalleryState extends State<PictureGallery> {
         onVerticalDragStart: (_) => Navigator.pop(context),
         child: Stack(
           children: [
-            photoGallery,
-            photoAppBar,
+            _photoGallery,
+            _photoAppBar,
           ],
         ),
       ),
     );
   }
 
-  Widget get photoGallery => PhotoViewGallery.builder(
+  Widget get _photoGallery => PhotoViewGallery.builder(
         pageController: PageController(
           initialPage: widget.initialIndex,
         ),
@@ -63,22 +63,25 @@ class _PictureGalleryState extends State<PictureGallery> {
         onPageChanged: (index) => setState(() => currentPhotoIndex = index),
       );
 
-  Widget get photoAppBar => AnimatedOpacity(
-        opacity: appBarIsVisible ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 100),
-        child: SizedBox(
-          height: 100,
-          child: AppBar(
-            backgroundColor: Colors.black,
-            actions: [
-              IconButton(
-                  onPressed: () => _savePhoto(
-                      context, widget.imageProviders[currentPhotoIndex]),
-                  icon: const Icon(Icons.save_alt_rounded)),
-            ],
+  Widget get _photoAppBar => IgnorePointer(
+    ignoring: !appBarIsVisible,
+    child: AnimatedOpacity(
+          opacity: appBarIsVisible ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 100),
+          child: SizedBox(
+            height: 100,
+            child: AppBar(
+              backgroundColor: Colors.black,
+              actions: [
+                IconButton(
+                    onPressed: () => _savePhoto(
+                        context, widget.imageProviders[currentPhotoIndex]),
+                    icon: const Icon(Icons.save_alt_rounded)),
+              ],
+            ),
           ),
         ),
-      );
+  );
 
   void _savePhoto(BuildContext context, FileImage image) async {
     if (!Platform.isAndroid && !Platform.isIOS) {
