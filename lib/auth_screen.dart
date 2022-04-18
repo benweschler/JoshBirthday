@@ -153,7 +153,7 @@ class _SignInButtonState extends State<SignInButton> {
             password: widget.passwordController.text.trim(),
           )
           .timeout(const Duration(seconds: 15));
-    } on FirebaseAuthException catch (_) {
+    } on FirebaseAuthException {
       setState(() => isLoading = false);
       _showInvalidLoginDialog();
     } on TimeoutException {
