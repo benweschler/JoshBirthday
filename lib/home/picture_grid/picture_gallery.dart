@@ -1,20 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class PictureGallery extends StatefulWidget {
-  final List<String> picturePaths;
+  final List<FileImage> imageProviders;
   final int initialIndex;
 
   const PictureGallery({
     Key? key,
-    required this.picturePaths,
+    required this.imageProviders,
     required this.initialIndex,
   }) : super(key: key);
 
@@ -46,13 +44,13 @@ class _PictureGalleryState extends State<PictureGallery> {
         pageController: PageController(
           initialPage: widget.initialIndex,
         ),
-        itemCount: widget.picturePaths.length,
+        itemCount: widget.imageProviders.length,
         builder: (context, index) => PhotoViewGalleryPageOptions(
-          imageProvider: AssetImage(widget.picturePaths[index]),
+          imageProvider: widget.imageProviders[index],
           minScale: PhotoViewComputedScale.contained,
           maxScale: PhotoViewComputedScale.contained * 10,
           heroAttributes:
-              PhotoViewHeroAttributes(tag: widget.picturePaths[index]),
+              PhotoViewHeroAttributes(tag: index),
           scaleStateCycle: (scaleState) {
             switch (scaleState) {
               case PhotoViewScaleState.initial:
@@ -75,14 +73,14 @@ class _PictureGalleryState extends State<PictureGallery> {
             actions: [
               IconButton(
                   onPressed: () => _savePhoto(
-                      context, widget.picturePaths[currentPhotoIndex]),
+                      context, widget.imageProviders[currentPhotoIndex]),
                   icon: const Icon(Icons.save_alt_rounded)),
             ],
           ),
         ),
       );
 
-  void _savePhoto(BuildContext context, String imagePath) async {
+  void _savePhoto(BuildContext context, FileImage image) async {
     if (!Platform.isAndroid && !Platform.isIOS) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content:
@@ -95,7 +93,7 @@ class _PictureGalleryState extends State<PictureGallery> {
         : await Permission.photosAddOnly.request();
 
     if (status.isGranted || status.isLimited) {
-      _showSavePhotoDialog(context, imagePath);
+      _showSavePhotoDialog(context, image);
     } else if (status.isDenied || status.isPermanentlyDenied) {
       String permissionType = Platform.isAndroid
           ? "access your device storage "
@@ -107,41 +105,27 @@ class _PictureGalleryState extends State<PictureGallery> {
     }
   }
 
-  void _writeToLocalStorage(String assetPath) async {
-    // get the location in which to cache the image
-    final tempDir = await getTemporaryDirectory();
-    String savePath =
-        tempDir.path + '/${assetPath.substring(assetPath.lastIndexOf('/'))}';
-
-    // cache the image before persisting to local storage
-    final bytes = await rootBundle.load(assetPath);
-    await File(savePath).writeAsBytes(
-        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-
-    // persist the image to local storage
-    await ImageGallerySaver.saveFile(savePath);
-  }
-
-  _showSavePhotoDialog(BuildContext context, String imagePath) => showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: const Text('Save Photo?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _writeToLocalStorage(imagePath);
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            )
-          ],
+  _showSavePhotoDialog(BuildContext context, FileImage image) => showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => AlertDialog(
+      title: const Text('Save Photo?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
         ),
-      );
+        TextButton(
+          onPressed: () {
+            // persist image to local storage
+            ImageGallerySaver.saveFile(image.file.path);
+            Navigator.pop(context);
+          },
+          child: const Text('Save'),
+        )
+      ],
+    ),
+  );
 
   _showGoToSettingsDialog(BuildContext context, String permissionType) =>
       showDialog(

@@ -213,11 +213,11 @@ class CouponView extends StatelessWidget {
         builder: (_) => AlertDialog(
           content: const Text(
               'It looks like you\'re using an outdated version'
-                  ' of the app. Updated to the latest version '
-                  'in order to redeem coupons.'),
+                  ' of the app. Update to the latest version in order to redeem'
+                  ' coupons.'),
           actions: [
             TextButton(
-              child: const Text("Got It"),
+              child: const Text('Got It'),
               onPressed: () => Navigator.pop(context),
             )
           ],

@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:floof/utils/network_utils.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,40 +12,74 @@ import 'home/coupon_row/coupon.dart';
 import 'home/coupon_row/coupon_list.dart';
 
 class Bootstrapper {
-  static Future<void> bootstrapApp() async {
+  /// If the device is connected to the internet, activates this instance of the
+  /// app by syncing coupons with firestore, providing this instance of the app
+  /// with an app id, and downloading the picture gallery if it hasn't already.
+  /// Returns true if activation was successful, and false otherwise.
+  static Future<bool> bootstrapApp() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isOnline = await isConnectedToInternet();
 
-    String? appID = await _getAppID(isOnline);
+    String appID = prefs.getString('app_id') ?? const Uuid().v1();
 
-    // Protect against any weird, possibly non-existent edge case errors of no
-    // app id being assigned but isOnline being true.
-    if (isOnline && appID != null) {
-      await _syncCouponsWithFirestore(appID);
+    print('bootstrap start.');
+
+    if (isOnline) {
+      try {
+        await _syncCouponsWithFirestore(appID)
+            // This may not actually be necessary, but if the device's network
+            // connection is not actually connected to the internet this should be
+            // an easy way of catching it, instead of hoping the firebase requests
+            // throw some error.
+            .timeout(const Duration(seconds: 15));
+        await _downloadPhotosFromFirebase();
+      } catch (_) {
+        print('bootstrap error: $_');
+        return false;
+      }
     }
+    // Only set an app id if syncing to Firebase is successful.
+    await prefs.setString('app_id', appID);
+
+    print('bootstrap successful');
+
+    return true;
   }
 
-  /// Activates the app by giving it unique app ID if the device is online and
-  /// one does not exist. Returns the app's ID, or null if it is not activated.
-  static Future<String?> _getAppID(bool isOnline) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Give this instance of the app a unique ID if it doesn't already have one,
-    // but force app to register with Firebase on first run. If this is the
-    // first run and there is not network connection, do not activate the app by
-    // giving it an ID.
-    if (prefs.getString('app_id') == null && isOnline) {
-      await prefs.setString('app_id', const Uuid().v1());
-    }
-    return prefs.getString('app_id');
-  }
-
-  //TODO: implement
   static Future<void> _downloadPhotosFromFirebase() async {
-    final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-    throw UnimplementedError();
+    print("_downloadPhotosFromFirebase");
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String picturePath = "${appDocDir.path}/pictures";
+    final Directory pictureDownloadDir = Directory(picturePath);
+
+    // Only download photos if photos have not already been downloaded. When
+    // photos are downloaded, the /pictures directory is created.
+    if (await pictureDownloadDir.exists()) {
+      print('picture dir exists.');
+      return;
+    }
+    pictureDownloadDir.create();
+
+    final firebaseStorage = FirebaseStorage.instance.ref().child("pictures");
+    final ListResult pictureList = await firebaseStorage.listAll();
+    print("Pic Num: ${pictureList.items.length}");
+    int count = 1;
+    for (var picture in pictureList.items) {
+      print(
+          'writing picture number ${count++} called ${picture.name} from firebase');
+      final file = File("${pictureDownloadDir.path}/${picture.name}");
+      await picture.writeToFile(file).catchError((e) async {
+        await pictureDownloadDir.delete();
+        throw Exception("Exception occurred during picture download");
+      });
+    }
+    print(
+        'files found in download dir after download: ${(await pictureDownloadDir.list().toList()).length}');
+    print('picture download successfully completed.');
   }
 
   static Future<void> _syncCouponsWithFirestore(String appID) async {
+    print("_syncCouponsWithFirestore");
     // Get an instance of both the local cache and Firestore database
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseFirestore firestore = FirebaseFirestore.instance;

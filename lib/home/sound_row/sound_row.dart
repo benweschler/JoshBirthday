@@ -51,6 +51,7 @@ class _SoundRowState extends State<SoundRow> {
         currentlyPlaying = null;
       });
     });
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       clipBehavior: Clip.none,
