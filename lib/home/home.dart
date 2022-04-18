@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:floof/home/picture_grid/picture_grid.dart';
 import 'package:floof/home/sound_row/sound_row.dart';
+import 'package:floof/utils/network_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/style.dart';
@@ -70,6 +71,7 @@ class Home extends StatelessWidget {
                 SizedBox(height: Insets.med),
                 const CouponRow(),
                 const SizedBox(height: 50),
+                const Text("Version ${AccessVersion.version}"),
               ],
             ),
           ),
