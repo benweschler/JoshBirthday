@@ -130,8 +130,8 @@ class CouponView extends StatelessWidget {
                   // If firestore can't be reached, don't redeem.
                   await firebase
                       .collection('coupons')
-                      .doc('${coupon.firestoreID}')
-                      .update({'isActive': false})
+                      .doc('coupons')
+                      .update({'${coupon.firestoreID}': false})
                       .then((_) async =>
                   await _redeemCoupon(context, coupon, disableCoupon))
                       .catchError((_) => _showNetworkErrorSnackBar(context));

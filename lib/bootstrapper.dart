@@ -60,7 +60,8 @@ class Bootstrapper {
 
     final firebaseStorage = FirebaseStorage.instance.ref().child("pictures");
     final ListResult pictureList = await firebaseStorage.listAll();
-    debugPrint("Number of pictures found in Firebase Storage: ${pictureList.items.length}");
+    debugPrint(
+        "Number of pictures found in Firebase Storage: ${pictureList.items.length}");
 
     for (var picture in pictureList.items) {
       debugPrint('Saving ${picture.name} from firebase');
@@ -70,7 +71,8 @@ class Bootstrapper {
         throw Exception("Exception occurred during picture download");
       });
     }
-    debugPrint('Number of files successfully saved: ${(await pictureDownloadDir.list().toList()).length}');
+    debugPrint(
+        'Number of files successfully saved: ${(await pictureDownloadDir.list().toList()).length}');
     debugPrint('Picture download successfully completed.');
   }
 
@@ -82,7 +84,8 @@ class Bootstrapper {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     // Get the collection containing coupon data.
-    CollectionReference couponsCollection = firestore.collection('coupons');
+    DocumentReference couponsDoc =
+        firestore.collection('coupons').doc('coupons');
     // Get the app_id currently registered with firestore
     DocumentSnapshot appIDDoc =
         await firestore.doc('app_id/active_app_id').get();
@@ -100,8 +103,7 @@ class Bootstrapper {
       // Pull coupon record from Firestore to local storage
       for (Coupon coupon in CouponList.coupons) {
         bool firestoreCouponValue =
-            (await couponsCollection.doc('${coupon.firestoreID}').get())
-                .get('isActive') as bool;
+            (await couponsDoc.get()).get("${coupon.firestoreID}");
         await prefs.setBool(coupon.title, firestoreCouponValue);
       }
     }
@@ -111,9 +113,8 @@ class Bootstrapper {
 
       // Push coupon record from local storage to Firestore
       for (Coupon coupon in CouponList.coupons) {
-        couponsCollection
-            .doc('${coupon.firestoreID}')
-            .update({'isActive': prefs.getBool(coupon.title)});
+        couponsDoc
+            .update({"${coupon.firestoreID}": prefs.getBool(coupon.title)});
       }
     }
   }

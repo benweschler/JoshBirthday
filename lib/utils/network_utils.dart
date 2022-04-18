@@ -6,5 +6,5 @@ Future<bool> isConnectedToInternet() {
 }
 
 class AccessVersion {
-  static const String version = "2.4";
+  static const String version = "2.5";
 }
