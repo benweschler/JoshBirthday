@@ -37,7 +37,21 @@ class PictureRow extends StatelessWidget {
       }
     }
 
-    return imageList;
+    // Assume that each image file is named with a number in Firebase storage.
+    // Sort the images by their number rather than the order that Firebase
+    // orders them.
+    final sortedList = imageList
+      ..sort((a, b) {
+        String pathA = a.file.path;
+        String pathB = b.file.path;
+        String fileNumberA = pathA.substring(
+            pathA.lastIndexOf("/") + 1, pathA.lastIndexOf("."));
+        String fileNumberB = pathB.substring(
+            pathB.lastIndexOf("/") + 1, pathB.lastIndexOf("."));
+        return int.parse(fileNumberA).compareTo(int.parse(fileNumberB));
+      });
+
+    return sortedList;
   }
 }
 
