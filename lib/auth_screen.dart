@@ -142,12 +142,10 @@ class _SignInButtonState extends State<SignInButton> {
   }
 
   Future _signIn() async {
-    print('signing in');
     if (!(await isConnectedToInternet())) {
       _showNetworkErrorDialog();
     }
     try {
-      print('sending auth request');
       await FirebaseAuth.instance.signOut();
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(
@@ -162,7 +160,6 @@ class _SignInButtonState extends State<SignInButton> {
       setState(() => isLoading = false);
       _showNetworkErrorDialog();
     }
-    print('auth successful');
   }
 
   void _showInvalidLoginDialog() {

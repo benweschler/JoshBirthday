@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: Corners.medBorderRadius,
                       ),
-                      child: PictureRow(),
+                      child: const PictureRow(),
                     ),
                   ),
                 ),
