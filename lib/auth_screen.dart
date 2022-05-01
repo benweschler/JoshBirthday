@@ -52,10 +52,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Email',
-                        border: const OutlineInputBorder(),
-                        focusColor: Theme.of(context).colorScheme.primary,
+                        border: OutlineInputBorder(),
                       ),
                       style: const TextStyle(fontSize: 16),
                       cursorColor: Theme.of(context).colorScheme.primary,
@@ -63,10 +62,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     SizedBox(height: Insets.med),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
-                        border: const OutlineInputBorder(),
-                        focusColor: Theme.of(context).colorScheme.primary,
+                        border: OutlineInputBorder(),
                       ),
                       style: const TextStyle(fontSize: 16),
                       obscureText: true,

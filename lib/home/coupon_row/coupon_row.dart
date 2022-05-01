@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import '../../theme/style.dart';
 import 'coupon_list.dart';
 
-class CouponRow extends StatefulWidget {
+class CouponRow extends StatelessWidget {
   const CouponRow({Key? key}) : super(key: key);
 
-  @override
-  State<CouponRow> createState() => _CouponRowState();
-}
-
-class _CouponRowState extends State<CouponRow> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,14 +18,7 @@ class _CouponRowState extends State<CouponRow> {
           CouponCard(
             coupon: CouponList.coupons[i],
           )
-      ]
-              .expand((element) => [
-                    element,
-                    SizedBox(
-                      width: Insets.med,
-                    )
-                  ])
-              .toList()),
+      ].expand((element) => [element, SizedBox(width: Insets.med)]).toList()),
     );
   }
 }
